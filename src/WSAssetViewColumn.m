@@ -83,15 +83,19 @@
     [self setNeedsDisplay];
 }
 
-#define SELECTED_IMAGE @"WSAssetViewSelectionIndicator.png"
+#define SELECTED_IMAGE @"Gridview-icon-selection-checkmark"
 
 - (UIImageView *)selectedView
 {
     if (!_selectedView) {
         
         // Lazily create the selectedView.
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:SELECTED_IMAGE]];
+        CGRect frame = self.frame;
+        frame.origin = CGPointMake(0.0, 0.0);
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:frame];
+        imageView.image = [UIImage imageNamed:SELECTED_IMAGE];
         imageView.hidden = YES;
+        imageView.contentMode = UIViewContentModeBottomRight;
         [self addSubview:imageView];
         
         _selectedView = imageView;

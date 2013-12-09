@@ -72,10 +72,7 @@
 {
     self.navigationItem.title = @"Loading";
     
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone 
-                                                                                           target:self 
-                                                                                           action:@selector(doneButtonAction:)];
-    
+	self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)], [[UIBarButtonItem alloc] initWithTitle:@"Select All" style:UIBarButtonItemStylePlain target:self action:@selector(selectAll:)]];
     
     // TableView configuration.
     self.tableView.contentInset = TABLEVIEW_INSETS;
@@ -157,6 +154,23 @@
 - (void)doneButtonAction:(id)sender
 {     
     self.assetPickerState.state = WSAssetPickerStatePickingDone;
+}
+
+- (void)selectAll:(UIBarButtonItem *)sender
+{
+    BOOL selected = [sender.title hasPrefix:@"Select"];
+    for (WSAssetWrapper *assetWrapper in self.fetchedAssets) {
+        assetWrapper.selected = selected;
+        // Update the state object's selectedAssets.
+        [self.assetPickerState changeSelectionState:selected forAsset:assetWrapper.asset];
+    }
+    if (selected) {
+        sender.title = @"Deselect All";
+    }
+    else {
+        sender.title = @"Select All";
+    }
+    [self.tableView reloadData];
 }
 
 
