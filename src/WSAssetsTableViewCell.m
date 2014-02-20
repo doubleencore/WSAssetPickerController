@@ -85,6 +85,17 @@
     for (WSAssetWrapper *assetWrapper in assets) {
         
         WSAssetViewColumn *assetViewColumn = [[WSAssetViewColumn alloc] initWithImage:[UIImage imageWithCGImage:assetWrapper.asset.thumbnail]];
+        
+        // if the asset is a video type show the video icon on the cell
+        if ([assetWrapper.asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) {
+            
+            UIImageView *videoIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"View-Video-icon"]];
+            videoIcon.frame = CGRectMake(2, assetViewColumn.frame.size.height - 10.0f, 14.0f, 8.0f);
+            
+            [assetViewColumn addSubview:videoIcon];
+            [assetViewColumn bringSubviewToFront:videoIcon];
+        }
+        
         assetViewColumn.column = [assets indexOfObject:assetWrapper];
         assetViewColumn.selected = assetWrapper.isSelected;
         
@@ -129,7 +140,14 @@
         
         // Adjust the frame x-origin of the next assetView.
         frame.origin.x = frame.origin.x + frame.size.width + ASSET_VIEW_PADDING;
-    }                                              
+    }
+    
+//    UIImageView *videoIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"View-Video-icon"]];
+//    videoIcon.backgroundColor = [UIColor redColor];
+//    videoIcon.frame = CGRectMake(0, 0, 100.0f, 100.0f);
+//    
+//    [self.contentView addSubview:videoIcon];
+//    [self.contentView bringSubviewToFront:videoIcon];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
